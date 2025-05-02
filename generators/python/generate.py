@@ -53,7 +53,7 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = [""]
+packages = ["fyn_schema"]
         """.strip())
 
 if __name__ == "__main__":
