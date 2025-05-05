@@ -1,19 +1,19 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "APIEndpoint",
+  "title": "APIPath",
   "type": "object",
   "properties": {
     "REPORT_STATUS": {
       "type": "string",
-      "const": "runner_manager/report_status/"
+      "enum": ["runner_manager/report_status/"]
     },
     "UPDATE_SYSTEM": {
       "type": "string",
-      "const": "runner_manager/update_system/"
+      "enum": ["runner_manager/update_system/"]
     },
     "REGISTER": {
       "type": "string", 
-      "const": "runner_manager/register/"
+      "enum": ["runner_manager/register/"]
     }
   },
   "required": ["REPORT_STATUS", "UPDATE_SYSTEM", "REGISTER"]

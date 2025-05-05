@@ -1,7 +1,8 @@
 import shutil
 import os
 from pathlib import Path
-from datamodel_code_generator import generate
+from datamodel_code_generator import generate, InputFileType, OpenAPIScope
+from datamodel_code_generator.parser import LiteralType
 
 def generate_python_models():
     # Get the directory where this script is located
@@ -32,7 +33,25 @@ def generate_python_models():
         generate(
             input_=schema_file,
             input_file_type="jsonschema",
-            output=output_file
+            output=output_file,
+            enum_field_as_literal=(LiteralType.All 
+                                   if 'path' in str(schema_file) else None)
+        )
+    
+    for schema_file in schema_dir.glob("**/*.yaml"):
+        output_file = (package_dir / 
+                       f"{schema_file.parent.name}_{schema_file.stem}.py")
+        print(f"Generating: {output_file}")
+        output_file.parent.mkdir(parents=True, exist_ok=True)
+        generate(
+            input_=schema_file,
+            input_file_type=InputFileType.OpenAPI,
+            output=output_file,
+            use_operation_id_as_name=True,
+            openapi_scopes=[OpenAPIScope.Paths, 
+                            OpenAPIScope.Schemas, 
+                            OpenAPIScope.Tags,
+                            OpenAPIScope.Parameters]
         )
     
     # Create pyproject.toml

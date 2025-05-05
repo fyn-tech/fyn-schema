@@ -1,0 +1,60 @@
+openapi: 3.0.4
+
+info:
+  title: Sample API
+  description: HTML.
+  version: 0.0.1
+
+servers:
+  - url: http://api.example.com
+    description: Main (production) server
+
+paths:
+  /job_manager/report_status/{id}:
+    patch:
+      operationId: UpdateJobStatus
+      summary: Updates job status.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: New status payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JobStatus"
+      responses:
+        "200":
+          description: The updated job status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobStatus"
+
+components:
+  schemas:
+    JobStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - QUEUED
+            - PREPARING
+            - FETCHING_RESOURCES
+            - STARTING
+            - RUNNING
+            - PAUSED
+            - CLEANING_UP
+            - UPLOADING_RESULTS
+            - SUCCEEDED
+            - FAILED
+            - FAILED_RESOURCE_ERROR
+            - FAILED_TERMINATED
+            - FAILED_TIMEOUT
+      required:
+        - status
