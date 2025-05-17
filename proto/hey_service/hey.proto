@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package hey;
+
+service HeyService {
+  rpc SayHey (HeyReq) returns (HeyRes);
+}
+
+message HeyReq {
+  string name = 1;
+}
+
+message HeyRes {
+  string message = 1;
+}

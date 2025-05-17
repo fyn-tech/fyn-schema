@@ -1,2 +1,2 @@
-# fyn_buf
-Protobuf Declarations for Fyn-Tech
+# fyn-schema
+Protobuf Schema Declarations for Fyn-Tech
