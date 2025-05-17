@@ -1,2 +1,3 @@
 # fyn-schema
-Protobuf Schema Declarations for Fyn-Tech
+
+This repository contains the schema definitions shared with all other repositories in the [fyn-tech](https://github.com/fyn-tech) environment. 

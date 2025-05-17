@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "APIPath",
+  "type": "object",
+  "properties": {
+    "REPORT_STATUS": {
+      "type": "string",
+      "enum": ["runner_manager/report_status/"]
+    },
+    "UPDATE_SYSTEM": {
+      "type": "string",
+      "enum": ["runner_manager/update_system/"]
+    },
+    "REGISTER": {
+      "type": "string", 
+      "enum": ["runner_manager/register/"]
+    }
+  },
+  "required": ["REPORT_STATUS", "UPDATE_SYSTEM", "REGISTER"]
+}
