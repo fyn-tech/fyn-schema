@@ -3,7 +3,7 @@ syntax = "proto3";
 package hey;
 
 service HeyService {
-  rpc SayHey (HeyReq) returns (HeyRes);
+  rpc SayHey(HeyReq) returns (HeyRes);
 }
 
 message HeyReq {
