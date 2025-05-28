@@ -7,6 +7,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write  # Required to push tags using GITHUB_TOKEN
+
 jobs:
   tag:
     runs-on: ubuntu-latest
@@ -23,9 +26,14 @@ jobs:
           bump_each_commit: false
           version_format: "${major}.${minor}.${patch}"
 
-      - name: Create git tag
+      - name: Configure Git
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git tag v${{ steps.version.outputs.version }}
-          git push origin v${{ steps.version.outputs.version }}
+
+      - name: Create git tag
+        env:
+          TAG: v${{ steps.version.outputs.version }}
+        run: |
+          git tag $TAG
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git $TAG
