@@ -4,9 +4,6 @@ package hello;
 
 service HelloService {
   rpc SayHello(HelloReq) returns (HelloRes);
-  rpc SayHelloMultiple1(stream HelloReq) returns (HelloRes);
-  rpc SayHelloMultiple2(HelloReq) returns (stream HelloRes);
-  rpc SayHelloMultiple3(stream HelloReq) returns (stream HelloRes);
 }
 
 message HelloReq {
