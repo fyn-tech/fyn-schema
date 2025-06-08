@@ -52,15 +52,15 @@ jobs:
         env:
           TAG: v${{ steps.version.outputs.version }}
         with:
-          tag_name: v${{ env.TAG }}
-          name: Release v${{ env.TAG }}
+          tag_name: ${{ env.TAG }}
+          name: Release ${{ env.TAG }}
           body: |
             Automated release with generated protobuf files.
             
             **Generated files included:**
             - Protobuf generated code in multiple languages
-            - Correspond with definitions in the branch tagged with version v${{ env.TAG }}
+            - Correspond with definitions in the branch tagged with version ${{ env.TAG }}
           files: |
-            schema-gen-v${{ env.TAG }}.tar.gz
+            schema-gen-${{ env.TAG }}.tar.gz
           draft: false
           prerelease: false
