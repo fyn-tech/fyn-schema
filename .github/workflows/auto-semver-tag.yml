@@ -26,7 +26,7 @@ jobs:
           bump_each_commit: false
           version_format: "${major}.${minor}.${patch}"
 
-      - name: Configure Git
+      - name: Configure git
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
@@ -44,10 +44,10 @@ jobs:
       - name: Archive generated files
         run: |
           cd gen
-          tar -czf ../schema-gen-v${{ steps.version.outputs.version }}.tar.gz .
+          tar -czf ../fyn-schema-gen-${{ steps.version.outputs.version }}.tar.gz .
           cd ..
 
-      - name: Create a GitHub Release with artifacts
+      - name: Create a GitHub release with artifacts
         uses: softprops/action-gh-release@v1
         env:
           TAG: v${{ steps.version.outputs.version }}
@@ -56,8 +56,8 @@ jobs:
           name: Release ${{ env.TAG }}
           body: |
             Automated release with generated protobuf files.
-            
-            **Generated files included:**
+
+            **Files included:**
             - Protobuf generated code in multiple languages
             - Correspond with definitions in the branch tagged with version ${{ env.TAG }}
           files: |
