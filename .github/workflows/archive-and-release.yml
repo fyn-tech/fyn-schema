@@ -24,7 +24,7 @@ jobs:
       - name: Get tag name
         id: get_tag
         run: |
-          # Get the SemVer tag (e.g. v1.2.3) that points to the triggering commit
+          # Get the SemVer tag that points to the triggering commit
           TAG=$(git tag --points-at ${{ github.event.workflow_run.head_sha }} | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
           echo "tag_name=$TAG" >> $GITHUB_OUTPUT
           echo "Found tag: $TAG"
@@ -51,3 +51,4 @@ jobs:
             fyn-schema-gen-${{ env.TAG }}.tar.gz
           draft: false
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
