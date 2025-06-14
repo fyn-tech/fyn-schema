@@ -18,6 +18,8 @@ jobs:
         with:
             # Checkout the exact commit that triggered the original workflow
             ref: ${{ github.event.workflow_run.head_sha }}
+            fetch-depth: 0    # Fetch all history so tags are available
+            fetch-tags: true  # Explicitly fetch tags
 
       - name: Get tag name
         id: get_tag
