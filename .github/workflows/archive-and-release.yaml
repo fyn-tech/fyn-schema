@@ -1,0 +1,36 @@
+name: Archive and Release Artifacts on Tag Creation
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    if: github.event.base_ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate protobuf files
+        run: make generate
+
+      - name: Archive generated files
+        run: |
+          cd gen
+          tar -czf ../fyn-schema-gen-${{ github.ref_name }}.tar.gz .
+          cd ..
+
+      - name: Create a GitHub release with artifacts
+        uses: softprops/action-gh-release@v1
+        env:
+          TAG: ${{ github.ref_name }}
+        with:
+          tag_name: ${{ env.TAG }}
+          name: Release ${{ env.TAG }}
+          body: |
+            Automated release with generated Protobuf/gRPC code in all supported languages. The artifacts correspond with the proto definitions in the branch tagged with ${{ env.TAG }}.
+          files: |
+            fyn-schema-gen-${{ env.TAG }}.tar.gz
+          draft: false
+          prerelease: false

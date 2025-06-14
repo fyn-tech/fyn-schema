@@ -1,6 +1,6 @@
 # This workflow automatically creates a semantic version tag when code is merged into the main branch. The tags will conform to the convention in https://semver.org/.
 
-name: Auto-generate semver tag on merge to main
+name: Auto-generate semver tag on push to main
 
 on:
   push:
@@ -42,26 +42,3 @@ jobs:
         run: |
           git tag -f latest v${{ steps.version.outputs.version }}
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git latest --force
-
-      - name: Generate protobuf files
-        run: make generate
-
-      - name: Archive generated files
-        run: |
-          cd gen
-          tar -czf ../fyn-schema-gen-v${{ steps.version.outputs.version }}.tar.gz .
-          cd ..
-
-      - name: Create a GitHub release with artifacts
-        uses: softprops/action-gh-release@v1
-        env:
-          TAG: v${{ steps.version.outputs.version }}
-        with:
-          tag_name: ${{ env.TAG }}
-          name: Release ${{ env.TAG }}
-          body: |
-            Automated release with generated Protobuf/gRPC code in all supported languages. The artifacts correspond with the proto definitions in the branch tagged with ${{ env.TAG }}.
-          files: |
-            fyn-schema-gen-${{ env.TAG }}.tar.gz
-          draft: false
-          prerelease: false
