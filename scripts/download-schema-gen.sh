@@ -29,8 +29,9 @@ if [ ! -d "$DEST" ]; then
 fi
 
 # Download and extract the protobuf artifacts
+TAR_FILE="$DEST/proto_gen.tar.gz"
 echo "Downloading protobuf artifacts from: $DOWNLOAD_URL"
-curl -L -o "$DEST/proto_gen.tar.gz" "$DOWNLOAD_URL"
-tar -xzf "$DEST/proto_gen.tar.gz" -C "$DEST"
-rm "$DEST/proto_gen.tar.gz"
+curl -L -o "$TAR_FILE" "$DOWNLOAD_URL"
+tar -xzf "$TAR_FILE" -C "$DEST"
+rm "$TAR_FILE"
 echo "Artifacts downloaded and extracted to: $DEST"

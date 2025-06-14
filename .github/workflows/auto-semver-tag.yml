@@ -42,9 +42,11 @@ jobs:
         run: make generate
 
       - name: Archive generated files
+        env:
+            TAG: v${{ steps.version.outputs.version }}
         run: |
           cd gen
-          tar -czf ../fyn-schema-gen-${{ steps.version.outputs.version }}.tar.gz .
+          tar -czf ../fyn-schema-gen-${{ env.TAG }}.tar.gz .
           cd ..
 
       - name: Create a GitHub release with artifacts
@@ -55,12 +57,8 @@ jobs:
           tag_name: ${{ env.TAG }}
           name: Release ${{ env.TAG }}
           body: |
-            Automated release with generated protobuf files.
-
-            **Files included:**
-            - Protobuf generated code in multiple languages
-            - Correspond with definitions in the branch tagged with version ${{ env.TAG }}
+            Automated release with generated Protobuf/gRPC code in all supported languages. The artifacts correspond with the proto definitions in the branch tagged with ${{ env.TAG }}.
           files: |
-            schema-gen-${{ env.TAG }}.tar.gz
+            fyn-schema-gen-${{ env.TAG }}.tar.gz
           draft: false
           prerelease: false
