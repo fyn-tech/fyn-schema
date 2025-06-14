@@ -1,16 +1,31 @@
-name: Archive and Release Artifacts on Tag Creation
+name: Archive and Release Artifacts
 
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_run:
+    workflows: ["Auto-Generate SemVer Tag"]
+    types:
+      - completed
+    branches:
+      - main
 
 jobs:
   release:
     runs-on: ubuntu-latest
-   #  if: github.event.base_ref == 'refs/heads/main'
+    # Only run if the first workflow succeeded
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+            # Checkout the exact commit that triggered the original workflow
+            ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Get tag name
+        id: get_tag
+        run: |
+          # Get the tag that points to the triggering commit
+          TAG=$(git tag --points-at ${{ github.event.workflow_run.head_sha }} | head -1)
+          echo "tag_name=$TAG" >> $GITHUB_OUTPUT
+          echo "Found tag: $TAG"
 
       - name: Generate protobuf files
         run: make generate
@@ -18,13 +33,13 @@ jobs:
       - name: Archive generated files
         run: |
           cd gen
-          tar -czf ../fyn-schema-gen-${{ github.ref_name }}.tar.gz .
+          tar -czf ../fyn-schema-gen-${{ steps.get_tag.outputs.tag_name }}.tar.gz .
           cd ..
 
       - name: Create a GitHub release with artifacts
         uses: softprops/action-gh-release@v1
         env:
-          TAG: ${{ github.ref_name }}
+          TAG: ${{ steps.get_tag.outputs.tag_name }}
         with:
           tag_name: ${{ env.TAG }}
           name: Release ${{ env.TAG }}
