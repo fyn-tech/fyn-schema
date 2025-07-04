@@ -13,6 +13,8 @@ permissions:
 jobs:
   tag:
     runs-on: ubuntu-latest
+    env:
+      REPO_URL: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,9 +38,11 @@ jobs:
           TAG: v${{ steps.version.outputs.version }}
         run: |
           git tag $TAG
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git $TAG
+          git push $REPO_URL $TAG
 
       - name: Create/update 'latest' tag
+        env:
+          TAG: v${{ steps.version.outputs.version }}
         run: |
-          git tag -f latest v${{ steps.version.outputs.version }}
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git latest --force
+          git tag -f latest $TAG
+          git push $REPO_URL latest --force
