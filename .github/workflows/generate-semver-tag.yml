@@ -1,0 +1,10 @@
+name: Generate SemVer Tag
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag:
+    uses: fyn-tech/fyn-env/.github/workflows/generate-semver-tag-shared.yml@main
