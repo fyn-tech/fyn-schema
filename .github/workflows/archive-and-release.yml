@@ -2,7 +2,7 @@ name: Archive and Release Artifacts
 
 on:
   workflow_run:
-    workflows: ["Auto-Generate SemVer Tag"]
+    workflows: ["Generate SemVer Tag"]
     types:
       - completed
     branches:
