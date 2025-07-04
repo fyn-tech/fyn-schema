@@ -36,9 +36,9 @@ jobs:
           TAG: v${{ steps.version.outputs.version }}
         run: |
           git tag $TAG
-          git push https://${{ secrets.PAT_OWNER }}:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git $TAG
+          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git $TAG
 
-      - name: Create/update latest tag
+      - name: Create/update 'latest' tag
         run: |
           git tag -f latest v${{ steps.version.outputs.version }}
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git latest --force
