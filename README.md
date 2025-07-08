@@ -2,7 +2,7 @@
 
 This repository contains the schema definitions shared with all other repositories in the [fyn-tech](https://github.com/fyn-tech) environment. 
 
-# Proto Generation Solution with buf and Docker
+# Proto Generation with buf and Docker
 
 This setup generates gRPC code from Protocol Buffer definitions using the [buf](https://buf.build/) tool within a Docker container. The following languages are supported:
 
