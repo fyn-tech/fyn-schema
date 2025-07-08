@@ -2,23 +2,23 @@ version: v1
 plugins:
   # C++ generation
   - plugin: buf.build/protocolbuffers/cpp:v31.0
-    out: gen/cpp
+    out: &cpp-out gen/cpp
   - plugin: buf.build/grpc/cpp:v1.72.0
-    out: gen/cpp
+    out: *cpp-out
 
   # Python generation
   - plugin: buf.build/protocolbuffers/python:v31.0
-    out: gen/python
+    out: &python-out gen/python
   - plugin: buf.build/grpc/python:v1.72.0
-    out: gen/python
-  
+    out: *python-out
+
   # # Django generation (uses betterproto for Python)
   # - plugin: buf.build/community/django:v1.5.0
   #   out: gen/django
 
   # JavaScript generation
   - plugin: buf.build/protocolbuffers/js:v3.21.4
-    out: gen/js
+    out: &js-out gen/js
   - plugin: buf.build/grpc/web:v1.5.0
-    out: gen/js
+    out: *js-out
     opt: import_style=commonjs,mode=grpcwebtext
