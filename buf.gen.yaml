@@ -9,7 +9,7 @@ plugins:
   # Python generation
   - plugin: buf.build/protocolbuffers/python:v31.0
     out: &python-out gen/python
-  - remote: buf.build/protocolbuffers/pyi:v31.1
+  - plugin: buf.build/protocolbuffers/pyi:v31.1
     out: &python-out
   - plugin: buf.build/grpc/python:v1.72.0
     out: *python-out
