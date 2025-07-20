@@ -21,6 +21,7 @@ build:
 generate: build
 	@echo "Generating code with buf..."
 	$(DOCKER_RUN) generate
+	@echo "Code generation complete!"
 
 # Clean generated code
 clean:
