@@ -35,7 +35,11 @@ lint:
 
 breaking:
 	@echo "Checking for breaking changes..."
-	$(DOCKER_RUN) breaking --against ".git#branch=main"
+	@$(DOCKER_RUN) breaking --against ".git#branch=main" 2>&1 | sed 's/^<input>:[0-9]*:[0-9]*:/\x1b[31m✗\x1b[0m /' || { \
+		echo ""; \
+		echo "Fix by adding fields instead of removing/changing them"; \
+		exit 1; \
+	}
 
 format:
 	@echo "Formatting proto files..."
