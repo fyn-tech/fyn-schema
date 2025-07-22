@@ -28,16 +28,17 @@ jobs:
         id: get_tag
         run: |
           # Get the SemVer tag that points to the triggering commit
-          TAG=$(git tag --points-at ${{ github.event.workflow_run.head_sha }} | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1)
-          echo "tag_name=$TAG" >> $GITHUB_OUTPUT
-          echo "Found tag: $TAG"
+          TAG=$(git tag --points-at ${{ github.event.workflow_run.head_sha }} | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -1 | sed 's/^v//')
+          echo "tag_num=$TAG" >> $GITHUB_OUTPUT
+          echo "tag_name=v$TAG" >> $GITHUB_OUTPUT
+          echo "Found tag: v$TAG"
 
       - name: Generate protobuf files
         run: make generate
 
       - name: Archive generated files
         run: |
-          tar -czf fyn-schema-gen-${{ steps.get_tag.outputs.tag_name }}.tar.gz -C gen .
+          tar -czf fyn-schema-gen-${{ steps.get_tag.outputs.tag_num }}.tar.gz -C gen .
 
       - name: Create a GitHub release with artifacts
         uses: softprops/action-gh-release@v2
@@ -47,9 +48,9 @@ jobs:
           tag_name: ${{ env.TAG }}
           name: Release ${{ env.TAG }}
           body: |
-            Automated release with generated Protobuf/gRPC code in all supported languages. The artifacts correspond with the proto definitions in the branch tagged with ${{ env.TAG }}.
+            Automated release with generated Protobuf/gRPC code in all supported languages..
           files: |
-            fyn-schema-gen-${{ env.TAG }}.tar.gz
+            fyn-schema-gen-${{ steps.get_tag.outputs.tag_num }}.tar.gz
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
