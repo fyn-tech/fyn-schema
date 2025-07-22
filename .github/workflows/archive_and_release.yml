@@ -37,9 +37,7 @@ jobs:
 
       - name: Archive generated files
         run: |
-          cd gen
-          tar -czf ../fyn-schema-gen-${{ steps.get_tag.outputs.tag_name }}.tar.gz .
-          cd ..
+          tar -czf fyn-schema-gen-${{ steps.get_tag.outputs.tag_name }}.tar.gz -C gen .
 
       - name: Create a GitHub release with artifacts
         uses: softprops/action-gh-release@v2
